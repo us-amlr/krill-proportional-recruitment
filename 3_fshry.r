@@ -1,5 +1,7 @@
+# CCAMLR code snippet below is from "K_ObsAndCatch_Fxv3LFDs_LFDplot.R"
+# except here 'juv.l' replaces '40' in the original code
+
 library(dplyr)
-# CCAMLR code from "K_ObsAndCatch_Fxv3LFDs_LFDplot.txt"
 #Read the data
 Kmv=read.csv(paste(path.dat,'KobsLFDs.csv',sep=''))
 #Highlight chosen months per area
@@ -18,5 +20,10 @@ fshry <- as.data.frame(Fm[(Fm$ASD == '481S' & c(Fm$M==1 | Fm$M==2 | Fm$M %in% 7:
 # fshry
 fshry <- fshry[order(fshry$ASD,fshry$Y,fshry$M),]
 
+write.csv(fshry[fshry$M==1 & fshry$ASD=='481N' |
+                fshry$M==2 & fshry$ASD=='481N' |
+                fshry$M==1 & fshry$ASD=='481S' |
+                fshry$M==2 & fshry$ASD=='481S',],
+                paste('propRec_csvs/fshry_',juv.l,'mm.csv',sep=''))
 
 

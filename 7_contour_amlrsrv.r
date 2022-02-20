@@ -6,11 +6,11 @@
 #oc.srv.meas <- read.csv('/users/noaa/GRYM/GYM_2021/5may/may19/oc_srv_meas.csv',
 #               header=TRUE)
 if(nlegs == 1 & nareas == 1){
-if(!dir.exists('plots/1area1leg')){
-    dir.create('plots/1area1leg')
+if(!dir.exists(paste('plots_',juv.l,'mm/1area1leg',sep=''))){
+    dir.create(paste('plots_',juv.l,'mm/1area1leg',sep=''))
     }
   l.min <- 2 # start of length data columns
-  plt.name <- paste('plots/1area1leg/AMLR LFs measured.pdf',sep='')
+  plt.name <- paste('plots_',juv.l,'mm/1area1leg/AMLR LFs measured.pdf',sep='')
   pdf(file = plt.name)
   par(cex=1.4) 
   contour(as.matrix(oc.srv.meas[,l.min:ncol(oc.srv.meas)]),
@@ -19,7 +19,7 @@ if(!dir.exists('plots/1area1leg')){
          ylab= "Krill length (mm)",
          nlevels=20,main = 'AMLR LFs measured')
 	 
-  plt.name <- paste('plots/1area1leg/AMLR LFs scaled.pdf',sep='')
+  plt.name <- paste('plots_',juv.l,'mm/1area1leg/AMLR LFs scaled.pdf',sep='')
   pdf(file = plt.name)
   par(cex=1.4) 
   contour(as.matrix(oc.srv[,l.min:ncol(oc.srv)]),
@@ -31,16 +31,18 @@ if(!dir.exists('plots/1area1leg')){
   graphics.off()
 ######## 
 if(nareas==1 & nlegs==2){
-if(!dir.exists('plots/1area2legs')){
-    dir.create('plots/1area2legs')
+if(!dir.exists(paste('plots_',juv.l,'mm/1area2legs',sep=''))){
+    dir.create(paste('plots_',juv.l,'mm/1area2legs',sep=''))
     }
+
   l.min <- 3
   amlr.set <- list()
   amlr.set[[1]] <- oc.srv[oc.srv$leg == 'A',]
   amlr.set[[2]] <- oc.srv[oc.srv$leg == 'D',]
   
 for(leg in 1:length(amlr.set)){
-  plt.name <- paste('plots/1area2legs/AMLR leg ',leg,' LFs scaled.pdf',sep='')
+  plt.name <- paste('plots_',juv.l,'mm/1area2legs/AMLR leg',
+                   leg,' LFs scaled.pdf',sep='')
   pdf(file = plt.name)
   par(cex=1.4) 
   contour(as.matrix(amlr.set[[leg]][,l.min:ncol(amlr.set[[leg]])]),
@@ -53,8 +55,8 @@ for(leg in 1:length(amlr.set)){
   }
 ######## 
 if(nareas==4 & nlegs==1){
-if(!dir.exists('plots/4areas1leg')){
-    dir.create('plots/4areas1leg')
+if(!dir.exists(paste('plots_',juv.l,'mm/4areas1leg',sep=''))){
+    dir.create(paste('plots_',juv.l,'mm/4areas1leg',sep=''))
     }
   l.min <- 4
   amlr.set <- list()
@@ -65,7 +67,7 @@ if(!dir.exists('plots/4areas1leg')){
   
 strata.nm <- c('EI','JI','SA','WA')
 for(stratum in 1:length(amlr.set)){
-  plt.name <- paste('plots/4areas1leg/AMLR ',
+  plt.name <- paste('plots_',juv.l,'mm/4areas1leg/AMLR ',
                     strata.nm[stratum],' LFs scaled.pdf',sep='')
   pdf(file = plt.name)
   par(cex=1.4) 
@@ -79,8 +81,8 @@ for(stratum in 1:length(amlr.set)){
 }
 ######## 
 if(nareas==4 & nlegs==2){
-if(!dir.exists('plots/4areas2legs')){
-    dir.create('plots/4areas2legs')
+if(!dir.exists(paste('plots_',juv.l,'mm/4areas2legs',sep=''))){
+    dir.create(paste('plots_',juv.l,'mm/4areas2legs',sep=''))
     }
   l.min <- 4
   amlr.set <- list()
@@ -96,7 +98,7 @@ if(!dir.exists('plots/4areas2legs')){
 strata.nm <- c('EI Jan ','JI Jan ','SA Jan ','WA Jan ',
   'EI Feb ','JI Feb ','SA Feb ','WA Feb ')
 for(stratum in 1:length(amlr.set)){
-  plt.name <- paste('plots/4areas2legs/AMLR ',
+  plt.name <- paste('plots_',juv.l,'mm/4areas2legs/AMLR ',
                     strata.nm[stratum],' LFs scaled.pdf',sep='')
     pdf(file = plt.name)
   par(cex=1.4) 

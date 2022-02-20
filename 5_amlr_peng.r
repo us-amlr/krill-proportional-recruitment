@@ -68,11 +68,11 @@ peng.30 <- 27 # 30 mm krill column
 peng.35 <- 32 # 35 mm krill column
 peng.40 <- 37 # 40 mm krill column
 
-diet.len.meas$p32 <- apply(diet.len.meas[,peng.min:peng.30],1,sum)/
+diet.len.meas$p30 <- apply(diet.len.meas[,peng.min:peng.30],1,sum)/
            apply(diet.len.meas[,peng.lens],1,sum)
-diet.len.meas$p36 <- apply(diet.len.meas[,peng.min:peng.35],1,sum)/
+diet.len.meas$p35 <- apply(diet.len.meas[,peng.min:peng.35],1,sum)/
            apply(diet.len.meas[,peng.lens],1,sum)
-diet.len.meas$p41 <- apply(diet.len.meas[,peng.min:peng.40],1,sum)/
+diet.len.meas$p40 <- apply(diet.len.meas[,peng.min:peng.40],1,sum)/
            apply(diet.len.meas[,peng.lens],1,sum)
 
 ###########

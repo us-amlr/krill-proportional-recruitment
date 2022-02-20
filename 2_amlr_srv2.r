@@ -1,5 +1,5 @@
-#run "R2_amlr_srv.txt" to produce "yal.lens.scaled"
-#and "haul.len.meas"
+# run "R2_amlr_srv.txt" to produce "yal.lens.scaled"
+# and "haul.len.meas"
 
 l.frq <- aggregate(haul.len.meas[,as.character(13:60)],by=list(haul.len.meas$region.id,
         haul.len.meas$leg.id,substr(rownames(haul.len.meas),5,14)),sum)
@@ -16,3 +16,7 @@ propRec.amlr.sd <- aggregate(propRec.h2$propRec.h,by=list(propRec.h2$Group.1,pro
 
 propRec.amlr <-cbind(propRec.amlr,propRec.amlr.sd$x)
 colnames(propRec.amlr) <- c('area','leg','yr','mean','sd')
+# 'propRec.amlr' (dim = 118 x 5) contains means and SDs of
+# proportional recruitment in AMLR surveys by area, leg, and year
+
+write.csv(propRec.amlr,paste('propRec_csvs/AMLR_srv_',juv.l,'mm.csv'))

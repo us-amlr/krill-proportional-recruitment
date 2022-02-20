@@ -24,8 +24,12 @@ ade.m1.m <- ade.m2.m <- ade.m1.sd <- ade.m2.sd <- vector()
     ade.m2.sd[iyr] <- sd(apply(ade.m2[ade.m2$yr == yrs[iyr],juv.lter],1,sum,na.rm=TRUE)/
         apply(ade.m2[ade.m2$yr == yrs[iyr],5:14],1,sum,na.rm=TRUE))
     }
+write.csv(cbind(yr=unique(ade$yr),mean=ade.m1.m,sd=ade.m1.sd),
+          paste('propRec_csvs/LTERdiets_m1_',juv.l,'mm.csv',sep=''))
+write.csv(cbind(yr=unique(ade$yr),mean=ade.m2.m,sd=ade.m2.sd),
+          paste('propRec_csvs/LTERdiets_m2_',juv.l,'mm.csv',sep=''))
 
-plt.name <- paste('plots/','LTER_adelie_Jan.pdf',sep='')
+plt.name <- paste('plots_',juv.l,'mm/','LTER_adelie_Jan.pdf',sep='')
 pdf(file = plt.name)
 y.lim <- c(min(ade.m1.m-ade.m1.sd),
            max(ade.m1.m+ade.m1.sd))
@@ -36,7 +40,7 @@ segments(
          yrs,ade.m1.m-ade.m1.sd
         )
 
-plt.name <- paste('plots/','LTER_adelie_Feb.pdf',sep='')
+plt.name <- paste('plots_',juv.l,'mm/','LTER_adelie_Feb.pdf',sep='')
 pdf(file = plt.name)
 y.lim <- c(min(ade.m2.m-ade.m2.sd,na.rm=TRUE),
            max(ade.m2.m+ade.m2.sd,na.rm=TRUE))
