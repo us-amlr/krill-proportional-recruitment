@@ -1,7 +1,7 @@
 # krill-proportional-recruitment
 Proportional recruitment in Antarctic krill: data and calculations
 
-This repository contains r-scripts and datasets on length-frequencies of Antarctic krill in the diets of three penguin species (gentoos, adelies, and chinstraps), U.S. AMLR summer research surveys, and, once data access is granted, observer data collected from the international krill fishery in CCAMLR Subarea 48.1. The r-scripts calculate length-based proportional recruitment (the annual means and standard deviations of these means for the proportion of krill smaller than a specified length) in each dataset. The results are illustrated in the 'plots' directory.
+This repository contains r-scripts and datasets on length-frequencies of Antarctic krill in U.S. AMLR summer research surveys, the diets of three penguin species (gentoos, adelies, and chinstraps), and, once data access is granted, observer data collected from the international krill fishery in CCAMLR Subarea 48.1. The r-scripts calculate length-based proportional recruitment (the annual means and standard deviations for each multiyear time series of the proportion of krill smaller than a specified length). The results are illustrated in the 'plots' directory.
 
 The examples in this repository show the differences resulting from considering juveniles to be krill less <= three alternative body lengths: 30mm, 35mm, or 40mm. Other cutoff lengths can also be explored but one of the datasets, '4_lter_adelie.r', is recorded in 5 mm bins. Lengths in the other datasets are recorded to the nearest mm.
 
