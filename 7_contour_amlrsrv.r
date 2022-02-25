@@ -41,8 +41,8 @@ if(!dir.exists(paste('plots_',juv.l,'mm/1area2legs',sep=''))){
   amlr.set[[2]] <- oc.srv[oc.srv$leg == 'D',]
   
 for(leg in 1:length(amlr.set)){
-  plt.name <- paste('plots_',juv.l,'mm/1area2legs/AMLR leg',
-                   leg,' LFs scaled.pdf',sep='')
+    plt.name <- paste('plots_',juv.l,'mm/1area2legs/AMLR leg',
+                      leg,' LFs scaled.pdf',sep='')
   pdf(file = plt.name)
   par(cex=1.4) 
   contour(as.matrix(amlr.set[[leg]][,l.min:ncol(amlr.set[[leg]])]),

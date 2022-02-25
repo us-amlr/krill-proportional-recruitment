@@ -1,0 +1,79 @@
+# data files in 'propRec_csvs' were created in '2_amlr_srv2', 
+# '3_fshry.r', '4_lter_adelie.r', and '6_plot_propRec.r'
+
+
+#'.l' means separated by leg, '.c' means legs combined
+cut.offs <- c(30,35,40) # maximum lengths for juvenile krill
+
+for(i in 1:length(cut.offs)){
+juv.l <- cut.offs[i] # enter 
+############
+amlr.srv <- read.csv(paste('propRec_csvs/AMLR_srv_ ',juv.l,' mm.csv',sep=''),header=TRUE)
+amlr.srv.c <- cbind(
+      mean = tapply(amlr.srv$mean,list(amlr.srv$area),mean,na.rm=TRUE),
+      sd = tapply(amlr.srv$mean,list(amlr.srv$area),sd,na.rm=TRUE),
+      juvl = juv.l)
+amlr.srv.l <- cbind(
+      mean = tapply(amlr.srv$mean,list(amlr.srv$area,amlr.srv$leg),
+             mean,na.rm=TRUE),
+      sd = tapply(amlr.srv$mean,list(amlr.srv$area,amlr.srv$leg),
+             sd,na.rm=TRUE),
+      juvl = juv.l)
+colnames(amlr.srv.l) <- c('Jan.mean','Feb.mean','Jan.SD','Feb.SD','juvl')
+assign(paste('amlr.srv.c.',juv.l,sep = ''), amlr.srv.c)
+assign(paste('amlr.srv.l.',juv.l,sep = ''), amlr.srv.l)
+
+############
+
+# removed fshry, see feb24
+
+############
+lter <- rbind(cbind(
+              read.csv(paste('propRec_csvs/LTERdiets_m1_',juv.l,'mm.csv',sep=''),
+              header=TRUE),mo = 'J'),
+              cbind(read.csv(paste('LTERdiets_m2_',juv.l,'mm.csv',sep=''),
+              header=TRUE),mo = 'F')
+              )
+lter.c <- cbind(
+      mean = mean(lter$mean,na.rm=TRUE),
+      sd = sd(lter$mean,na.rm=TRUE),
+      juvl=juv.l)
+lter.l <- cbind(
+      mean = tapply(lter$mean,list(lter$mo),
+             mean,na.rm=TRUE),
+      sd = tapply(lter$mean,list(lter$mo),
+             sd,na.rm=TRUE),
+      juvl=juv.l)
+assign(paste('lter.c.',juv.l,sep = ''), lter.c)
+assign(paste('lter.l.',juv.l,sep = ''), lter.l)
+
+############
+peng <- read.csv(paste('propRec_csvs/pengDiets_',juv.l,'mm.csv',sep=''),header=TRUE)
+peng <- peng[peng$mo == 1 | peng$mo ==2,]
+peng.c <- cbind(
+      mean = tapply(peng$pMean,list(peng$spp,peng$site),mean,na.rm=TRUE),
+      sd = tapply(peng$pMean,list(peng$spp,peng$site),sd,na.rm=TRUE),
+      juvl=juv.l)
+peng.l <- cbind(
+      mean = tapply(peng$pMean,list(peng$spp,peng$site,peng$mo),mean,na.rm=TRUE),
+      sd =
+      tapply(peng$pMean,list(peng$spp,peng$site,peng$mo),sd,na.rm=TRUE),
+      juvl=juv.l)
+colnames(peng.c) <- c('COPA.mean','CS.mean','COPA.SD','CS.SD','juvl')
+
+peng.l <- cbind(as.data.frame(peng.l),
+                mo=c(rep(1,6),rep(2,6)),
+                area=c(rep('copa',3),rep('cs',3),rep('copa',3),rep('cs',3)),
+		spp=c(rep(c('adpe','chpe','gepe'),4))
+		)
+assign(paste('peng.c.',juv.l,sep = ''), peng.c)
+assign(paste('peng.l.',juv.l,sep = ''), peng.l)
+} # end cut.offs i loop
+amlr.srv.c <- rbind(amlr.srv.c.30,amlr.srv.c.35,amlr.srv.c.40)
+amlr.srv.l <- rbind(amlr.srv.l.30,amlr.srv.l.35,amlr.srv.l.40)
+#fshry.c <- rbind(fshry.c.30,fshry.c.35,fshry.c.40)
+#fshry.l <- rbind(fshry.l.30,fshry.l.35,fshry.l.40)
+lter.c <- rbind(lter.c.30,lter.c.35,lter.c.40)
+lter.l <- rbind(lter.l.30,lter.l.35,lter.l.40)
+peng.c <- rbind(peng.c.30,peng.c.35,peng.c.40)
+peng.l <- rbind(peng.l.30,peng.l.35,peng.l.40)

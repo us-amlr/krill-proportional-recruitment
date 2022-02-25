@@ -10,9 +10,9 @@ yrs <- unique(ade$yr)
 ade.m1 <- subset(ade[ade$mo == 1,])
 ade.m2 <- subset(ade[ade$mo == 2,])
 
-if(juv.l==30) juv.lter <- 5:7 # translate juvenile size limits to LTER 5 mm bins
-if(juv.l==35) juv.lter <- 5:8
-if(juv.l==40) juv.lter <- 5:9
+if(juv.l<=30) juv.lter <- 5:7 # translate juvenile size limits to LTER 5 mm bins
+if(juv.l>30 & juv.l < 36) juv.lter <- 5:8
+if(juv.l>=40) juv.lter <- 5:9
 ade.m1.m <- ade.m2.m <- ade.m1.sd <- ade.m2.sd <- vector()
   for(iyr in 1:length(yrs)){
     ade.m1.m[iyr] <- mean(apply(ade.m1[ade.m1$yr == yrs[iyr],juv.lter],1,sum,na.rm=TRUE)/

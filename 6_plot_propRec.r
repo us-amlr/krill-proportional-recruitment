@@ -12,8 +12,7 @@ for(i.r in 1:length(unique(diet.len.meas$region.id)))
     spp.region <- diet.len.meas[diet.len.meas$region.id == 
                   as.character(unique(diet.len.meas$region.id)[i.r]) & 
                   diet.len.meas$spp.id == as.character(unique(diet.len.meas$spp.id)[i.sp]),]
-    if(nrow(spp.region) > 0){
-      #file.nm <- paste('spp.region$p',juv.l,sep='')
+    if(nrow(spp.region) > 0){ # if the species occurs at the site
       if(juv.l == 30){
         prMean <- as.data.frame(aggregate(spp.region$p30,
                                         list(spp.region$yr.id,spp.region$mo.id),mean))
@@ -34,7 +33,7 @@ for(i.r in 1:length(unique(diet.len.meas$region.id)))
         class(prMean$Group.1) <- class(prMean$Group.2) <- 'numeric'
         pMean <- prMean$x
         prSD <- aggregate(spp.region$p40,list(spp.region$yr.id,spp.region$mo.id),sd)
-        }
+        
       class(prSD$Group.1) <- class(prSD$Group.2) <- 'numeric'
       pSD <- prSD$x
       spSite <- as.data.frame(cbind(pMean=as.numeric(round(pMean,3)),
@@ -53,7 +52,8 @@ for(i.r in 1:length(unique(diet.len.meas$region.id)))
         propRec <-spSite,
       if(nrow(spSite)>0)
         propRec <- rbind(propRec,spSite))
-      }
+    } # end nrow(spp.region) > 0
+    } # end for loops
 write.csv(propRec,paste('propRec_csvs/pengDiets_',juv.l,'mm.csv',sep=''))
 
 
@@ -69,8 +69,8 @@ gepe.cs.m1 <- propRec[propRec$spp == 'GEPE' & propRec$site =='CS' & propRec$mo =
 gepe.cs.m2 <- propRec[propRec$spp == 'GEPE' & propRec$site =='CS' & propRec$mo == 2,]
 adpe.copa.m1 <- propRec[propRec$spp == 'ADPE' & propRec$site =='COPA' & propRec$mo == 1,]
 adpe.copa.m2 <- propRec[propRec$spp == 'ADPE' & propRec$site =='COPA' & propRec$mo == 2,]
-adpe.cs.m1 <- propRec[propRec$spp == 'ADPE' & propRec$site =='CS' & propRec$mo == 1,]
-adpe.cs.m2 <- propRec[propRec$spp == 'ADPE' & propRec$site =='CS' & propRec$mo == 2,]
+#adpe.cs.m1 <- propRec[propRec$spp == 'ADPE' & propRec$site =='CS' & propRec$mo == 1,]
+#adpe.cs.m2 <- propRec[propRec$spp == 'ADPE' & propRec$site =='CS' & propRec$mo == 2,]
 chpe.copa.m1 <- propRec[propRec$spp == 'CHPE' & propRec$site =='COPA' & propRec$mo == 1,]
 chpe.copa.m2 <- propRec[propRec$spp == 'CHPE' & propRec$site =='COPA' & propRec$mo == 2,]
 chpe.cs.m1 <- propRec[propRec$spp == 'CHPE' & propRec$site =='CS' & propRec$mo == 1,]
@@ -104,8 +104,8 @@ amlr.copa.2 <- propRec.amlr[propRec.amlr$area == 'SA' & propRec.amlr$leg == 'D',
   lines(1992:2020,adpe.copa.m1$pMean[match(1992:2020,adpe.copa.m1$yr)],col='green',lwd=2)
   points(yrs,ade.m1.m,col='brown',pch=19)
   lines(yrs,ade.m1.m,col='brown',lwd=2)
- # points(fsh.481S.m1$Y,fsh.481S.m1$f,col='black',pch=17)
- # lines(fsh.481S.m1$Y,fsh.481S.m1$f,col='black',lwd=3)
+  #points(fsh.481S.m1$Y,fsh.481S.m1$f,col='black',pch=17)
+  #lines(fsh.481S.m1$Y,fsh.481S.m1$f,col='black',lwd=3)
 
   if(plot.mos == 2){
   points(1992:2020,chpe.copa.m2$pMean[match(1992:2020,chpe.copa.m2$yr)],col='blue',pch=19)
@@ -116,8 +116,8 @@ amlr.copa.2 <- propRec.amlr[propRec.amlr$area == 'SA' & propRec.amlr$leg == 'D',
   lines(1992:2020,adpe.copa.m2$pMean[match(1992:2020,adpe.copa.m2$yr)],col='green',lwd=2,lty=2)
   points(yrs,ade.m2.m,col='brown',pch=19)
   lines(yrs,ade.m2.m,col='brown',lwd=2,lty=2)
- # points(fsh.481S.m2$Y,fsh.481S.m2$f,col='black',pch=17)
- # lines(fsh.481S.m2$Y,fsh.481S.m2$f,col='black',lwd=3,lty=2)
+  #points(fsh.481S.m2$Y,fsh.481S.m2$f,col='black',pch=17)
+  #lines(fsh.481S.m2$Y,fsh.481S.m2$f,col='black',lwd=3,lty=2)
   }
 
   legend.placement <- c(2014,1.03)
@@ -136,29 +136,29 @@ amlr.copa.2 <- propRec.amlr[propRec.amlr$area == 'SA' & propRec.amlr$leg == 'D',
   lines(1992:2020,gepe.cs.m1$pMean[match(1992:2020,gepe.cs.m1$yr)],col='red',lwd=2)
   points(1992:2020,chpe.cs.m1$pMean[match(1992:2020,chpe.cs.m1$yr)],col='blue',pch=19)
   lines(1992:2020,chpe.cs.m1$pMean[match(1992:2020,chpe.cs.m1$yr)],col='blue',lwd=2)
-  points(1992:2020,adpe.cs.m1$pMean[match(1992:2020,adpe.cs.m1$yr)],col='green',pch=19)
-  lines(1992:2020,adpe.cs.m1$pMean[match(1992:2020,adpe.cs.m1$yr)],col='green',lwd=2)
+  #points(1992:2020,adpe.cs.m1$pMean[match(1992:2020,adpe.cs.m1$yr)],col='green',pch=19)
+  #lines(1992:2020,adpe.cs.m1$pMean[match(1992:2020,adpe.cs.m1$yr)],col='green',lwd=2)
   points(yrs,ade.m1.m,col='brown',pch=19)
   lines(yrs,ade.m1.m,col='brown',lwd=2)
- # points(fsh.481N.m1$Y,fsh.481N.m1$f,col='black',pch=17)
- # lines(fsh.481N.m1$Y,fsh.481N.m1$f,col='black',lwd=3)
+  #points(fsh.481N.m1$Y,fsh.481N.m1$f,col='black',pch=17)
+  #lines(fsh.481N.m1$Y,fsh.481N.m1$f,col='black',lwd=3)
 
   if(plot.mos == 2){
   points(1992:2020,gepe.cs.m2$pMean[match(1992:2020,gepe.cs.m2$yr)],col='red',pch=19)
   lines(1992:2020,gepe.cs.m2$pMean[match(1992:2020,gepe.cs.m2$yr)],col='red',lwd=2,lty=2)
   points(1992:2020,chpe.cs.m2$pMean[match(1992:2020,chpe.cs.m2$yr)],col='blue',pch=19)
   lines(1992:2020,chpe.cs.m2$pMean[match(1992:2020,chpe.cs.m2$yr)],col='blue',lwd=2,lty=2)
-  points(1992:2020,adpe.cs.m2$pMean[match(1992:2020,adpe.cs.m2$yr)],col='green',pch=19)
-  lines(1992:2020,adpe.cs.m2$pMean[match(1992:2020,adpe.cs.m2$yr)],col='green',lwd=2,lty=2)
+  #points(1992:2020,adpe.cs.m2$pMean[match(1992:2020,adpe.cs.m2$yr)],col='green',pch=19)
+  #lines(1992:2020,adpe.cs.m2$pMean[match(1992:2020,adpe.cs.m2$yr)],col='green',lwd=2,lty=2)
   points(yrs,ade.m2.m,col='brown',pch=19)
   lines(yrs,ade.m2.m,col='brown',lwd=2,lty=2)
- # points(fsh.481N.m2$Y,fsh.481N.m2$f,col='black',pch=17)
- # lines(fsh.481N.m2$Y,fsh.481N.m2$f,col='black',lwd=3,lty=2)
+  #points(fsh.481N.m2$Y,fsh.481N.m2$f,col='black',pch=17)
+  #lines(fsh.481N.m2$Y,fsh.481N.m2$f,col='black',lwd=3,lty=2)
   }
 
   legend.placement <- c(2014,1.03)
   legend(legend.placement[1],legend.placement[2],
-    c('gepe.cs','chpe.cs','adpe.cs','adpe.lter',
+    c('gepe.cs','chpe.cs','adpe.lter',
     'fshry'),lty=c(1),pch=c(19,19,19,19,17),merge=T,
     lwd=c(2,2,2,2,3),col=c('red','blue','green','brown','black'),cex=0.7)
   graphics.off()

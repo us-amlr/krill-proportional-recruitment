@@ -1,7 +1,7 @@
 # set 'path.nm' to user's working directory
-path.nm <- '/users/noaa/papers/dhk/2022_propRec/2feb/feb20/'
+path.nm <- '/users/noaa/papers/dhk/2022_propRec/2feb/feb25/'
 setwd(paste(path.nm,sep=''))
-nareas <- 1 # no. sampling strata, must be 1 or 4
+nareas <-1 # no. sampling strata, must be 1 or 4
 nlegs <- 1  # no. sampling legs, must be 1 or 2
 juv.l <- 40 # krill length in mm defined as <= juveniles
 nages <- 7 # number of age classes
@@ -29,5 +29,8 @@ rm(list= ls()[!(ls() %in% c('path.dat','path.out','path.nm','site.nm','haul.len.
                               
 source(paste(path.nm,'5_amlr_peng.r',sep='')) # AERD penguins
 source(paste(path.nm,'6_plot_propRec.r',sep='')) # plot proportional recruitments
+#if(nareas ==1)
 source(paste(path.nm,'7_contour_amlrsrv.r',sep='')) # survey contours
+source(paste(path.nm,'8_bivariate.txt',sep='')) # propRec means X SDs all data sources
+
 
