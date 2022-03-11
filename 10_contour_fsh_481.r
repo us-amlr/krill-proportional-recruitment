@@ -1,7 +1,7 @@
 path.out <- paste(path.nm,'fshry/',sep='')
 Kmv=read.csv(paste(path.nm,'data/KobsLFDs.csv',sep=''))
 dim(Kmv)
-if(!dir.exists('fshry'))){
+if(!dir.exists('fshry')){
     dir.create('fshry')
     }
 #######################
@@ -18,7 +18,7 @@ oc.fsh.scaled <- as.data.frame(as.matrix(s481_m1))
  oc.fsh.scaled<-as.data.frame(as.matrix(t(oc.fsh.scaled)))
  oc.fsh.scaled <- oc.fsh.scaled[,-1] #zero length column
  
- plt.name <- paste('fshry/','481all_m1.pdf',sep='')
+ plt.name <- paste('fshry/','481all_m1_juvl_',juv.l,'mm.pdf',sep='')
  pdf(file = plt.name)
  par(cex=1.4) 
  contour(as.matrix(oc.fsh.scaled[,1:35]),x=as.numeric(rownames(oc.fsh.scaled)),
@@ -44,7 +44,7 @@ oc.fsh.scaled <- as.data.frame(as.matrix(s481_m1))
  oc.fsh.scaled<-as.data.frame(as.matrix(t(oc.fsh.scaled)))
  oc.fsh.scaled <- oc.fsh.scaled[,-1] #zero length column
  
- plt.name <- paste('fshry/','481all_m2.pdf',sep='')
+ plt.name <- paste('fshry/','481all_m2_juvl_',juv.l,'mm.pdf',sep='')
  pdf(file = plt.name)
  par(cex=1.4) 
  contour(as.matrix(oc.fsh.scaled[,1:35]),x=as.numeric(rownames(oc.fsh.scaled)),
@@ -69,7 +69,7 @@ oc.fsh.scaled <- as.data.frame(as.matrix(s481_m1))
  oc.fsh.scaled<-as.data.frame(as.matrix(t(oc.fsh.scaled)))
  oc.fsh.scaled <- oc.fsh.scaled[,-1] #zero length column
  
- plt.name <- paste('fshry/','481all_m1&2.pdf',sep='')
+ plt.name <- paste('fshry/','481all_m1&2_juvl_',juv.l,'mm.pdf',sep='')
  pdf(file = plt.name)
  par(cex=1.4) 
  contour(as.matrix(oc.fsh.scaled[,1:35]),x=as.numeric(rownames(oc.fsh.scaled)),
