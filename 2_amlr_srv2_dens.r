@@ -1,9 +1,8 @@
-# run "R2_amlr_srv.txt" to produce "yal.lens.scaled"
-# and "haul.len.scaled"
+# run "R2_amlr_srv.txt" to produce "haul.len.dens"
 
 if(nareas == 1){
-  l.frq <- aggregate(haul.len.scaled[,as.character(13:60)],by=list(
-        haul.len.scaled$leg.id,substr(rownames(haul.len.scaled),5,14)),sum)
+  l.frq <- aggregate(haul.len.dens[,as.character(13:60)],by=list(
+        haul.len.dens$leg.id,substr(rownames(haul.len.dens),5,14)),sum)
 
   propRec.h <- apply(l.frq[,as.character(13:juv.l)],1,sum,na.rm=T)/apply(l.frq[,as.character(13:60)],1,sum,na.rm=T)
   propRec.h2 <- cbind(l.frq[,1:2],propRec.h)
@@ -16,15 +15,15 @@ if(nareas == 1){
 
   propRec.amlr <-cbind(propRec.amlr,propRec.amlr.sd$x)
   colnames(propRec.amlr) <- c('leg','yr','mean','sd')
-  # 'propRec.amlr' (dim = 118 x 5) contains means and SDs of
-  # proportional recruitment in AMLR surveys by area, leg, and year
+  # 'propRec.amlr' (dim 37 x 4) contains means and SDs of
+  # proportional recruitment in AMLR surveys
 
   write.csv(propRec.amlr,paste('propRec_csvs/AMLR_srv_',juv.l,'mm.csv'))
   } #end nareas == 1
 
 if(nareas == 4){
-  l.frq <- aggregate(haul.len.scaled[,as.character(13:60)],by=list(haul.len.scaled$region.id,
-        haul.len.scaled$leg.id,substr(rownames(haul.len.scaled),5,14)),sum)
+  l.frq <- aggregate(haul.len.dens[,as.character(13:60)],by=list(haul.len.dens$region.id,
+        haul.len.dens$leg.id,substr(rownames(haul.len.dens),5,14)),sum)
   #alyr <- aggregate(l.frq[,as.character(13:60)],by=list(l.frq$Group.1,l.frq$Group.2,substr(l.frq$Group.3,1,4)),mean)
 
   propRec.h <- apply(l.frq[,as.character(13:juv.l)],1,sum,na.rm=T)/apply(l.frq[,as.character(13:60)],1,sum,na.rm=T)
