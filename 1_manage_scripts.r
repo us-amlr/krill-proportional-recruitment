@@ -1,10 +1,10 @@
 # set 'path.nm' to user's working directory
 path.nm <- '/users/noaa/papers/dhk/2022_propRec/3mar/mar11/'
 setwd(paste(path.nm,sep=''))
-juv.l <- 40 # krill length in mm defined as <= juveniles
+juv.l <- 30 # krill length in mm defined as <= juveniles
             # krill juv.l of 30, 35, 38, 40, 44 can be run without code modification
-nareas <- 4 # no. sampling strata, must be 1 or 4
-nlegs <- 2  # no. sampling legs, must be 1 or 2 
+nareas <- 1 # no. sampling strata, must be 1 or 4
+nlegs <- 1  # no. sampling legs, must be 1 or 2 
 nages <- 7  # number of age classes
 site.nm <- c('COPA','CS')
 geo <- c('481S','481N')
