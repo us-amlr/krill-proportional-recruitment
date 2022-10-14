@@ -1,10 +1,3 @@
-#was R2_contour_amlr2.txt on feb8
-# from CCAMLR_2021/SAM/Kinzey_code_locations
-# modified from may5_mac
-
-######## combi
-#oc.srv.meas <- read.csv('/users/noaa/GRYM/GYM_2021/5may/may19/oc_srv_meas.csv',
-#               header=TRUE)
 if(nlegs == 1 & nareas == 1){
 if(!dir.exists(paste('plots_',juv.l,'mm/1area1leg',sep=''))){
     dir.create(paste('plots_',juv.l,'mm/1area1leg',sep=''))
@@ -18,7 +11,7 @@ if(!dir.exists(paste('plots_',juv.l,'mm/1area1leg',sep=''))){
          xlab = "Year",labcex=1.3,ylim=c(20,60), 
          ylab= "Krill length (mm)",
          nlevels=20,main = 'AMLR LFs measured')
-         abline(h=38,col='blue',lwd=3,lty=2)
+         abline(h=30,col='blue',lwd=3,lty=2)
          abline(h=44,col='blue',lwd=3,lty=2)
 	 
   plt.name <- paste('plots_',juv.l,'mm/1area1leg/AMLR LFs scaled.pdf',sep='')
@@ -29,7 +22,7 @@ if(!dir.exists(paste('plots_',juv.l,'mm/1area1leg',sep=''))){
          xlab = "Year",labcex=1.3,ylim=c(20,60),
          ylab= "Krill length (mm)",
          nlevels=20,main = 'AMLR LFs scaled')
-         abline(h=38,col='blue',lwd=3,lty=2)
+         abline(h=30,col='blue',lwd=3,lty=2)
          abline(h=44,col='blue',lwd=3,lty=2)
   }
   graphics.off()
@@ -54,7 +47,7 @@ for(leg in 1:length(amlr.set)){
          y=13:60,xlab = "Year",labcex=1.3,
          ylab= "Krill length (mm)",ylim=c(20,60),
          nlevels=20,main = paste('AMLR leg ',leg,' LFs scaled'))
-         abline(h=38,col='blue',lwd=3,lty=2)
+         abline(h=30,col='blue',lwd=3,lty=2)
          abline(h=44,col='blue',lwd=3,lty=2)
   }
   graphics.off()
@@ -82,7 +75,7 @@ for(stratum in 1:length(amlr.set)){
          y=13:60,xlab = "Year",labcex=1.3,ylim=c(20,60),
          ylab= "Krill length (mm)",
          nlevels=20,main = paste('AMLR area',strata.nm[stratum],'LFs scaled'))
-         abline(h=38,col='blue',lwd=3,lty=2)
+         abline(h=30,col='blue',lwd=3,lty=2)
          abline(h=44,col='blue',lwd=3,lty=2)
   }
   graphics.off()
@@ -115,7 +108,7 @@ for(stratum in 1:length(amlr.set)){
          y=13:60,xlab = "Year",labcex=1.3,
          ylab= "Krill length (mm)",
          nlevels=20,main = paste('AMLR area',strata.nm[stratum],'LFs scaled'))
-         abline(h=38,col='blue',lwd=3,lty=2)
+         abline(h=30,col='blue',lwd=3,lty=2)
          abline(h=44,col='blue',lwd=3,lty=2)
   }
   graphics.off()

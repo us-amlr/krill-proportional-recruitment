@@ -3,17 +3,6 @@ n.y <- tapply(p.diets$SAMPLE_ID,list(p.diets$SAMPLE_YEAR),
                   function(x){length(unique(x))})
 n.y.mo <- tapply(p.diets$SAMPLE_ID,list(p.diets$SAMPLE_YEAR,p.diets$SAMPLE_MONTH),
                   function(x){length(unique(x))})
-if(nareas == 1)
-    n.y.area.mo <- tapply(p.diets$SAMPLE_ID,list(p.diets$SAMPLE_YEAR,p.diets$SAMPLE_MONTH),
-                  function(x){length(unique(x))})
-if(nareas == 4)
-    n.y.area.mo <- tapply(p.diets$SAMPLE_ID,list(p.diets$SAMPLE_YEAR,p.diets$SITE,p.diets$SAMPLE_MONTH),
-                  function(x){length(unique(x))})
-sqkm.areas <- c(43865,18151,24479,38524)
-names.yrs <- 1992:2012
-sqkm.all <- sum(sqkm.areas)
-################
-# abundance scaled up from individuals measured to captured
 peng.nsmpl <- as.numeric(tapply(p.diets$KRILL_LENGTH,list(p.diets$SAMPLE_ID),
                   length)) # total number measured in SAMPLE_ID
 peng.nsmpl.2D <- as.data.frame(cbind(peng.nsmpl,unique(p.diets$SAMPLE_ID)))
@@ -21,6 +10,7 @@ peng.nsmpl.2D <- as.data.frame(cbind(peng.nsmpl,unique(p.diets$SAMPLE_ID)))
 p.diets$amount <- NA # set up totals per sample_id column
 
 amount <- aggregate(p.diets$KRILL_LENGTH,list(p.diets$SAMPLE_ID),length)
+
 for (id in 1:length(unique(p.diets$SAMPLE_ID))){
   p.diets$amount[p.diets$SAMPLE_ID == amount$Group.1[id]] <- amount$x[id]
   }
@@ -46,7 +36,6 @@ if(nareas == 1){ # combine COPA and CAPE samples
   mo.id <- tapply(as.character(p.diets$SAMPLE_MONTH),p.diets$SAMPLE_ID,paste)
   yr.id <- tapply(as.character(p.diets$SAMPLE_YEAR),p.diets$SAMPLE_ID,paste)
   for(i.id in 1:length(spp.id)){
-    #region.id[i.id] <- region.id[[i.id]][1]
     spp.id[i.id] <- spp.id[[i.id]][1]
     mo.id[i.id] <- mo.id[[i.id]][1]
     yr.id[i.id] <- yr.id[[i.id]][1]

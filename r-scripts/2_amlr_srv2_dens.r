@@ -18,7 +18,7 @@ if(nareas == 1){
   # 'propRec.amlr' (dim 37 x 4) contains means and SDs of
   # proportional recruitment in AMLR surveys
 
-  write.csv(propRec.amlr,paste('propRec_csvs/AMLR_srv_',juv.l,'mm.csv'))
+  write.csv(propRec.amlr,paste('propRec_csvs/AMLR_srv_',juv.l,'mm_4strata.csv'))
   } #end nareas == 1
 
 if(nareas == 4){
@@ -40,5 +40,5 @@ if(nareas == 4){
   # 'propRec.amlr' (dim = 118 x 5) contains means and SDs of
   # proportional recruitment in AMLR surveys by area, leg, and year
 
-  write.csv(propRec.amlr,paste('propRec_csvs/AMLR_srv_',juv.l,'mm.csv'))
+  write.csv(propRec.amlr,paste('propRec_csvs/AMLR_srv_',juv.l,'mm_48.1.csv'))
   } #end nareas == 4

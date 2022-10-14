@@ -104,127 +104,60 @@ haul.biom.area <-cbind(haul.biom[,1:2],
              # this is the total biomass extrapolated from each
 	     # individual haul (units are metric tons)
 ##############
-if(nareas==4 & nlegs==1){
+if(nareas==1 & nlegs == 1){ # combine strata, months (Jan. & Feb.)
   yal.biom.norm <- 
       cbind(aggregate(haul.biom.scaled$biom.area,
-          by = list(substr(rownames(haul.biom.scaled),5,8),
-               haul.biom.scaled$region.id),
-          mean)[c(1,2,3)],
+          by = list(substr(rownames(haul.biom.scaled),5,8)),
+          mean),
        aggregate(haul.biom.scaled$biom.area,
-          by = list(substr(rownames(haul.biom.scaled),5,8),
-               haul.biom.scaled$region.id),sd)[3])
-  dimnames(yal.biom.norm) <- list(rownames(yal.biom.norm),c("year","area",
+          by = list(substr(rownames(haul.biom.scaled),5,8)),
+          sd)[2])
+  dimnames(yal.biom.norm) <- list(rownames(yal.biom.norm),c("year",
        "biom.m","biom.sd"))
-  yal.lens.meas <-  # new calculation May 4, 2021 -dhk
-  aggregate(haul.len.meas[,as.character(13:60)],
-          by = list(substr(rownames(haul.len.meas),5,8),haul.len.meas$region.id
-                 ), sum,na.rm=TRUE)
-          dimnames(yal.lens.meas) <-
+  yal.lens.meas <-
+  aggregate(haul.len.meas[,3:ncol(haul.len.meas)],
+          by = list(substr(rownames(haul.len.meas),5,8)), sum)
+                 dimnames(yal.lens.meas) <-
                           list(rownames(yal.lens.meas),
-                          c("year","area",colnames(yal.lens.meas[as.character(13:60)])))
+                          c("year",colnames(yal.lens.meas[as.character(13:60)])))
   yal.lens.scaled <-
-    aggregate(haul.len.scaled[,3:ncol(haul.len.scaled)],
-          by = list(substr(rownames(haul.len.scaled),5,8),haul.len.scaled$region.id
-                 ), sum)
-          dimnames(yal.lens.scaled) <-
+  aggregate(haul.len.scaled[,3:ncol(haul.len.scaled)],
+          by = list(substr(rownames(haul.len.scaled),5,8)), sum)
+                 dimnames(yal.lens.scaled) <-
                           list(rownames(yal.lens.scaled),
-                          c("year","area",colnames(yal.lens.scaled[as.character(13:60)])))
-  yal.vols <- tapply(dat.l$Volume/dat.l$depth_fished,list(dat.l$Year,dat.l$amlr_area),
+                          c("year",colnames(yal.lens.scaled[as.character(13:60)])))
+  yal.vols <- tapply(dat.l$Volume/dat.l$depth_fished,list(dat.l$Year),
                   function(x){sum(unique(x))}) # yal.vols are depth-integrated volumes (m^2)
                   # by year, area, and leg (yal.vols[,,1])
   yal.lens.dens <- yal.lens.scaled
   yal.lens.dens[,as.character(13:60)] <-  
              yal.lens.scaled[,as.character(13:60)]/
              as.vector(yal.vols[!is.na(yal.vols)])
-  yal.dens <- cbind(yal.lens.scaled[,1],dens.m2=apply(yal.lens.scaled[,as.character(13:60)],1,sum) /
+  yal.dens <- cbind(as.numeric(yal.lens.scaled[,1]),dens.m2=apply(yal.lens.scaled[,as.character(13:60)],1,sum) /
                   as.vector(yal.vols[!is.na(yal.vols)]))
-  oc.srv <- cbind(yal.lens.scaled[,1:3], # observed survey compositions scaled to total catch
+  oc.srv <- cbind(year=as.numeric(yal.lens.scaled[,1]),
                 prop.table(as.matrix(yal.lens.scaled[,as.character(13:60)]),1))
-  oc.srv.meas <- cbind(yal.lens.meas[,1:3], # unscaled to total catch
+  oc.srv.meas <- cbind(year=as.numeric(yal.lens.meas[,1]),
                 prop.table(as.matrix(yal.lens.meas[,as.character(13:60)]),1))
   net.dens.SD <- aggregate(haul.biom[,3],  # SD of densities, not of weights
-                list(substr(rownames(haul.biom),5,8),haul.biom$region.id,
-                    haul.biom$leg.id),sd,na.rm=T) # gm/m2 = metric tons/km2
+                list(substr(rownames(haul.biom),5,8)),sd,na.rm=T) # gm/m2 = metric tons/km2
   for(iyal in 1:nrow(net.dens.SD))
      if (is.na(net.dens.SD[iyal,"x"])) # if only one yal net sample, use average SD
          net.dens.SD[iyal,"x"] <-
-	   mean(net.dens.SD$x[net.dens.SD$Group.2==net.dens.SD[iyal,"Group.2"] &
-	   net.dens.SD$Group.3==net.dens.SD[iyal,"Group.3"]],na.rm=T)
+	 mean(net.dens.SD$x[net.dens.SD$Group.2==net.dens.SD[iyal,"Group.2"]],na.rm=T)
   area.net.biom.SD <- aggregate(haul.biom.area[,3],
-                    list(substr(rownames(haul.biom.area),5,8),haul.biom.area$region.id
-                    ),sd,na.rm=T)
-  colnames(area.net.biom.SD) <-c("year","area","area.SD")
+                    list(substr(rownames(haul.biom.area),5,8)),sd,na.rm=T)
+  colnames(area.net.biom.SD) <-c("year","area.SD")
   # NET BIOMASS
-  yal.biom.nets <- cbind(yal.lens.scaled[,1:3],
+  yal.biom.nets <- cbind(as.numeric(yal.lens.scaled[,1]),
                        biom.tons.km2=apply(t(t(yal.lens.dens[,as.character(13:60)])*wt_len),1,sum))
-  match.area.index <- match(yal.biom.nets$area,names(sqkm.areas))
   yal.biom.nets <- cbind(yal.biom.nets,
-                       biom = yal.biom.nets$biom.tons.km2*
-                       sqkm.areas[match.area.index],
+                       biom = yal.biom.nets[,"biom.tons.km2"]*
+                       sqkm.all,
                        biom_sd = area.net.biom.SD$area.SD)
   }
 ##############
-if(nareas==4 & nlegs==2){
-  yal.biom.norm <- 
-      cbind(aggregate(haul.biom.scaled$biom.area,
-          by = list(substr(rownames(haul.biom.scaled),5,8),
-               haul.biom.scaled$leg.id ,haul.biom.scaled$region.id),
-          mean)[c(1,3,2,4)],
-       aggregate(haul.biom.scaled$biom.area,
-          by = list(substr(rownames(haul.biom.scaled),5,8),
-               haul.biom.scaled$leg.id ,haul.biom.scaled$region.id),
-          sd)[4])
-  dimnames(yal.biom.norm) <- list(rownames(yal.biom.norm),c("year","area","leg",
-       "biom.m","biom.sd"))
-  yal.lens.meas <-  # new calculation May 4, 2021 -dhk
-  aggregate(haul.len.meas[,3:ncol(haul.len.meas)],
-          by = list(substr(rownames(haul.len.meas),5,8),haul.len.meas$region.id,
-                 haul.len.meas$leg.id), sum,na.rm=TRUE)
-                 dimnames(yal.lens.meas) <-
-                          list(rownames(yal.lens.meas),
-                          c("year","area","leg",colnames(yal.lens.meas[4:ncol(yal.lens.meas)])))
-  yal.lens.scaled <-
-  aggregate(haul.len.scaled[,3:ncol(haul.len.scaled)],
-          by = list(substr(rownames(haul.len.scaled),5,8),haul.len.scaled$region.id,
-                 haul.len.scaled$leg.id), sum)
-                 dimnames(yal.lens.scaled) <-
-                          list(rownames(yal.lens.scaled),
-                          c("year","area","leg",colnames(yal.lens.scaled[as.character(13:60)])))
-  yal.vols <- tapply(dat.l$Volume/dat.l$depth_fished,list(dat.l$Year,dat.l$amlr_area,dat.l$leg),
-                  function(x){sum(unique(x))}) # yal.vols are depth-integrated volumes (m^2)
-                  # by year, area, and leg (yal.vols[,,1])
-  yal.lens.dens <- yal.lens.scaled
-  yal.lens.dens[,as.character(13:60)] <-  
-             yal.lens.scaled[,as.character(13:60)]/
-             as.vector(yal.vols[!is.na(yal.vols)])
-  yal.dens <- cbind(yal.lens.scaled[,1],dens.m2=apply(yal.lens.scaled[,as.character(13:60)],1,sum) /
-                  as.vector(yal.vols[!is.na(yal.vols)]))
-  oc.srv <- cbind(yal.lens.scaled[,1:3],
-                prop.table(as.matrix(yal.lens.scaled[,as.character(13:60)]),1))
-  oc.srv.meas <- cbind(yal.lens.meas[,1:3],
-                prop.table(as.matrix(yal.lens.meas[,as.character(13:60)],1)))
-  net.dens.SD <- aggregate(haul.biom[,3],  # SD of densities, not of weights
-                list(substr(rownames(haul.biom),5,8),haul.biom$region.id,
-                    haul.biom$leg.id),sd,na.rm=T) # gm/m2 = metric tons/km2
-  for(iyal in 1:nrow(net.dens.SD))
-     if (is.na(net.dens.SD[iyal,"x"])) # if only one yal net sample, use average SD
-         net.dens.SD[iyal,"x"] <-
-	 mean(net.dens.SD$x[net.dens.SD$Group.2==net.dens.SD[iyal,"Group.2"] &
-	 net.dens.SD$Group.3==net.dens.SD[iyal,"Group.3"]],na.rm=T)
-  area.net.biom.SD <- aggregate(haul.biom.area[,3],
-                    list(substr(rownames(haul.biom.area),5,8),haul.biom.area$region.id,
-                    haul.biom.area$leg.id),sd,na.rm=T)
-  colnames(area.net.biom.SD) <-c("year","area","area.SD")
-  # NET BIOMASS
-  yal.biom.nets <- cbind(yal.lens.scaled[,1:2],
-                       biom.tons.km2=apply(t(t(yal.lens.dens[,as.character(13:60)])*wt_len),1,sum))
-  match.area.index <- match(yal.biom.nets$area,names(sqkm.areas))
-  yal.biom.nets <- cbind(yal.biom.nets,
-                       biom = yal.biom.nets$biom.tons.km2*sqkm.areas[match.area.index],
-                       biom_sd = area.net.biom.SD$area.SD)
-}
-##############
-if(nareas==1 & nlegs == 2){
+if(nareas==1 & nlegs == 2){ # combine strata, separate Jan. and Feb.
   yal.biom.norm <- 
       cbind(aggregate(haul.biom.scaled$biom.area,
           by = list(substr(rownames(haul.biom.scaled),5,8),
@@ -284,58 +217,125 @@ if(nareas==1 & nlegs == 2){
                        biom_sd = area.net.biom.SD$area.SD)
   }
 ##############
-if(nareas==1 & nlegs == 1){
+if(nareas==4 & nlegs==1){ # separate strata, combine months
   yal.biom.norm <- 
       cbind(aggregate(haul.biom.scaled$biom.area,
-          by = list(substr(rownames(haul.biom.scaled),5,8)),
-          mean),
+          by = list(substr(rownames(haul.biom.scaled),5,8),
+               haul.biom.scaled$region.id),
+          mean)[c(1,2,3)],
        aggregate(haul.biom.scaled$biom.area,
-          by = list(substr(rownames(haul.biom.scaled),5,8)),
-          sd)[2])
-  dimnames(yal.biom.norm) <- list(rownames(yal.biom.norm),c("year",
+          by = list(substr(rownames(haul.biom.scaled),5,8),
+               haul.biom.scaled$region.id),sd)[3])
+  dimnames(yal.biom.norm) <- list(rownames(yal.biom.norm),c("year","area",
        "biom.m","biom.sd"))
-  yal.lens.meas <-
-  aggregate(haul.len.meas[,3:ncol(haul.len.meas)],
-          by = list(substr(rownames(haul.len.meas),5,8)), sum)
-                 dimnames(yal.lens.meas) <-
+  yal.lens.meas <-  # new calculation May 4, 2021 -dhk
+  aggregate(haul.len.meas[,as.character(13:60)],
+          by = list(substr(rownames(haul.len.meas),5,8),haul.len.meas$region.id
+                 ), sum,na.rm=TRUE)
+          dimnames(yal.lens.meas) <-
                           list(rownames(yal.lens.meas),
-                          c("year",colnames(yal.lens.meas[as.character(13:60)])))
+                          c("year","area",colnames(yal.lens.meas[as.character(13:60)])))
   yal.lens.scaled <-
-  aggregate(haul.len.scaled[,3:ncol(haul.len.scaled)],
-          by = list(substr(rownames(haul.len.scaled),5,8)), sum)
-                 dimnames(yal.lens.scaled) <-
+    aggregate(haul.len.scaled[,3:ncol(haul.len.scaled)],
+          by = list(substr(rownames(haul.len.scaled),5,8),haul.len.scaled$region.id
+                 ), sum)
+          dimnames(yal.lens.scaled) <-
                           list(rownames(yal.lens.scaled),
-                          c("year",colnames(yal.lens.scaled[as.character(13:60)])))
-  yal.vols <- tapply(dat.l$Volume/dat.l$depth_fished,list(dat.l$Year),
+                          c("year","area",colnames(yal.lens.scaled[as.character(13:60)])))
+  yal.vols <- tapply(dat.l$Volume/dat.l$depth_fished,list(dat.l$Year,dat.l$amlr_area),
                   function(x){sum(unique(x))}) # yal.vols are depth-integrated volumes (m^2)
                   # by year, area, and leg (yal.vols[,,1])
   yal.lens.dens <- yal.lens.scaled
   yal.lens.dens[,as.character(13:60)] <-  
              yal.lens.scaled[,as.character(13:60)]/
              as.vector(yal.vols[!is.na(yal.vols)])
-  yal.dens <- cbind(as.numeric(yal.lens.scaled[,1]),dens.m2=apply(yal.lens.scaled[,as.character(13:60)],1,sum) /
+  yal.dens <- cbind(yal.lens.scaled[,1],dens.m2=apply(yal.lens.scaled[,as.character(13:60)],1,sum) /
                   as.vector(yal.vols[!is.na(yal.vols)]))
-  oc.srv <- cbind(year=as.numeric(yal.lens.scaled[,1]),
+  oc.srv <- cbind(yal.lens.scaled[,1:3], # observed survey compositions scaled to total catch
                 prop.table(as.matrix(yal.lens.scaled[,as.character(13:60)]),1))
-  oc.srv.meas <- cbind(year=as.numeric(yal.lens.meas[,1]),
+  oc.srv.meas <- cbind(yal.lens.meas[,1:3], # unscaled to total catch
                 prop.table(as.matrix(yal.lens.meas[,as.character(13:60)]),1))
   net.dens.SD <- aggregate(haul.biom[,3],  # SD of densities, not of weights
-                list(substr(rownames(haul.biom),5,8)),sd,na.rm=T) # gm/m2 = metric tons/km2
+                list(substr(rownames(haul.biom),5,8),haul.biom$region.id,
+                    haul.biom$leg.id),sd,na.rm=T) # gm/m2 = metric tons/km2
   for(iyal in 1:nrow(net.dens.SD))
      if (is.na(net.dens.SD[iyal,"x"])) # if only one yal net sample, use average SD
          net.dens.SD[iyal,"x"] <-
-	 mean(net.dens.SD$x[net.dens.SD$Group.2==net.dens.SD[iyal,"Group.2"]],na.rm=T)
+	   mean(net.dens.SD$x[net.dens.SD$Group.2==net.dens.SD[iyal,"Group.2"] &
+	   net.dens.SD$Group.3==net.dens.SD[iyal,"Group.3"]],na.rm=T)
   area.net.biom.SD <- aggregate(haul.biom.area[,3],
-                    list(substr(rownames(haul.biom.area),5,8)),sd,na.rm=T)
-  colnames(area.net.biom.SD) <-c("year","area.SD")
+                    list(substr(rownames(haul.biom.area),5,8),haul.biom.area$region.id
+                    ),sd,na.rm=T)
+  colnames(area.net.biom.SD) <-c("year","area","area.SD")
   # NET BIOMASS
-  yal.biom.nets <- cbind(as.numeric(yal.lens.scaled[,1]),
+  yal.biom.nets <- cbind(yal.lens.scaled[,1:3],
                        biom.tons.km2=apply(t(t(yal.lens.dens[,as.character(13:60)])*wt_len),1,sum))
+  match.area.index <- match(yal.biom.nets$area,names(sqkm.areas))
   yal.biom.nets <- cbind(yal.biom.nets,
-                       biom = yal.biom.nets[,"biom.tons.km2"]*
-                       sqkm.all,
+                       biom = yal.biom.nets$biom.tons.km2*
+                       sqkm.areas[match.area.index],
                        biom_sd = area.net.biom.SD$area.SD)
   }
+##############
+if(nareas==4 & nlegs==2){ # separate strata, separate months
+  yal.biom.norm <- 
+      cbind(aggregate(haul.biom.scaled$biom.area,
+          by = list(substr(rownames(haul.biom.scaled),5,8),
+               haul.biom.scaled$leg.id ,haul.biom.scaled$region.id),
+          mean)[c(1,3,2,4)],
+       aggregate(haul.biom.scaled$biom.area,
+          by = list(substr(rownames(haul.biom.scaled),5,8),
+               haul.biom.scaled$leg.id ,haul.biom.scaled$region.id),
+          sd)[4])
+  dimnames(yal.biom.norm) <- list(rownames(yal.biom.norm),c("year","area","leg",
+       "biom.m","biom.sd"))
+  yal.lens.meas <-  # new calculation May 4, 2021 -dhk
+  aggregate(haul.len.meas[,3:ncol(haul.len.meas)],
+          by = list(substr(rownames(haul.len.meas),5,8),haul.len.meas$region.id,
+                 haul.len.meas$leg.id), sum,na.rm=TRUE)
+                 dimnames(yal.lens.meas) <-
+                          list(rownames(yal.lens.meas),
+                          c("year","area","leg",colnames(yal.lens.meas[4:ncol(yal.lens.meas)])))
+  yal.lens.scaled <-
+  aggregate(haul.len.scaled[,3:ncol(haul.len.scaled)],
+          by = list(substr(rownames(haul.len.scaled),5,8),haul.len.scaled$region.id,
+                 haul.len.scaled$leg.id), sum)
+                 dimnames(yal.lens.scaled) <-
+                          list(rownames(yal.lens.scaled),
+                          c("year","area","leg",colnames(yal.lens.scaled[as.character(13:60)])))
+  yal.vols <- tapply(dat.l$Volume/dat.l$depth_fished,list(dat.l$Year,dat.l$amlr_area,dat.l$leg),
+                  function(x){sum(unique(x))}) # yal.vols are depth-integrated volumes (m^2)
+                  # by year, area, and leg (yal.vols[,,1])
+  yal.lens.dens <- yal.lens.scaled
+  yal.lens.dens[,as.character(13:60)] <-  
+             yal.lens.scaled[,as.character(13:60)]/
+             as.vector(yal.vols[!is.na(yal.vols)])
+  yal.dens <- cbind(yal.lens.scaled[,1],dens.m2=apply(yal.lens.scaled[,as.character(13:60)],1,sum) /
+                  as.vector(yal.vols[!is.na(yal.vols)]))
+  oc.srv <- cbind(yal.lens.scaled[,1:3],
+                prop.table(as.matrix(yal.lens.scaled[,as.character(13:60)]),1))
+  oc.srv.meas <- cbind(yal.lens.meas[,1:3],
+                prop.table(as.matrix(yal.lens.meas[,as.character(13:60)],1)))
+  net.dens.SD <- aggregate(haul.biom[,3],  # SD of densities, not of weights
+                list(substr(rownames(haul.biom),5,8),haul.biom$region.id,
+                    haul.biom$leg.id),sd,na.rm=T) # gm/m2 = metric tons/km2
+  for(iyal in 1:nrow(net.dens.SD))
+     if (is.na(net.dens.SD[iyal,"x"])) # if only one yal net sample, use average SD
+         net.dens.SD[iyal,"x"] <-
+	 mean(net.dens.SD$x[net.dens.SD$Group.2==net.dens.SD[iyal,"Group.2"] &
+	 net.dens.SD$Group.3==net.dens.SD[iyal,"Group.3"]],na.rm=T)
+  area.net.biom.SD <- aggregate(haul.biom.area[,3],
+                    list(substr(rownames(haul.biom.area),5,8),haul.biom.area$region.id,
+                    haul.biom.area$leg.id),sd,na.rm=T)
+  colnames(area.net.biom.SD) <-c("year","area","area.SD")
+  # NET BIOMASS
+  yal.biom.nets <- cbind(yal.lens.scaled[,1:2],
+                       biom.tons.km2=apply(t(t(yal.lens.dens[,as.character(13:60)])*wt_len),1,sum))
+  match.area.index <- match(yal.biom.nets$area,names(sqkm.areas))
+  yal.biom.nets <- cbind(yal.biom.nets,
+                       biom = yal.biom.nets$biom.tons.km2*sqkm.areas[match.area.index],
+                       biom_sd = area.net.biom.SD$area.SD)
+}
 ################
 # MATURITY
 mature <- dat.l$maturity != "JUV"

@@ -5,7 +5,7 @@ if(juv.l==40) adult.age <- 2.3
 if(juv.l==44) adult.age <- 2.8
 
 ###################
-if(nareas == 1){
+if(nareas == 1){ # combine all sampling strata in 48.1
   data.sources <- list(gepe.m1$pMean,chpe.m1$pMean,adpe.m1$pMean,
         ade.m1.m,fsh.m1$f,amlr.1$mean,lter.trwl)
   names(data.sources) <- c('gepe','chpe','adpe',
@@ -19,11 +19,11 @@ if(nareas == 1){
   plot.xy <- cbind(c(1:length(data.sources)),plot.x,plot.y)
 
   c7 <- c('red','blue','green','brown','black','blue','purple') # plot colors for 7 data sources
-  plt.name <- paste('plots_',juv.l,'mm/propRec_nareas_',nareas,'_agg.pdf',sep='')
+  plt.name <- paste('plots_',juv.l,'mm/propRec_nareas_',nareas,'_48.1.pdf',sep='')
   pdf(file = plt.name)
   par(cex=1.3)
   plot(plot.x,plot.y, main = paste('Juveniles <= ',juv.l,
-    ' mm','\n(age ',adult.age,' years)',sep=''),lwd=3,xlim = c(0.1,0.77),
+    ' mm','\n(age ',adult.age,' years)',sep=''),lwd=3,xlim = c(0,0.77),
     cex = 1.5,ylim=c(0,0.3),ylab = 'SD', 
     xlab = 'mean proportional recruitment',pch=1:10,col=c7
     )
@@ -38,10 +38,10 @@ if(nareas == 1){
   if(juv.l == 44)
     legend(0.5,0.15,names(data.sources),pch=1:8,col=c7,cex=1,pt.lwd=2,text.font=2)
   graphics.off()
-  }# end if(nareas == 1)
+  } # end if(nareas == 1)
 ##############################
 
-if(nareas == 4){
+if(nareas == 4){ # separate results by sampling strata
   data.sources <- list(gepe.copa.m1$pMean,chpe.copa.m1$pMean,adpe.copa.m1$pMean,
     gepe.cs.m1$pMean,chpe.cs.m1$pMean,
     ade.m1.m,fsh.481N.m1$f,fsh.481N.m1$f,
@@ -51,9 +51,6 @@ if(nareas == 4){
     'gepe.cape','chpe.cape','adpe.LTER',
     'fsh.481S','fsh.481N','amlr.trwl.cape','amlr.trwl.copa','lter.trwl')
 
-  #if(nlegs == 2){
-  #    data.sources <-c(data.sources,list(fsh.481S.m2=fsh.481S.m2$f,fsh.481N.m2=fsh.481N.m2$f))
-  #    }
   plot.x <- plot.y <- vector()
   for (i in 1:length(data.sources)){
     plot.x[i] <- mean(data.sources[[i]])
@@ -88,5 +85,5 @@ if(nareas == 4){
     col=c11,cex=0.8,pt.lwd=2,text.font=2)
   }
   graphics.off()
-  }# end if(nareas == 4)
+  } # end if(nareas == 4)
 
