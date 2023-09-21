@@ -78,4 +78,18 @@ oc.fsh.scaled <- as.data.frame(as.matrix(s481_m1))
          nlevels=20,main = 'Fishery months 1&2 combined ')
          abline(h=30,col='blue',lwd=3,lty=2)
          abline(h=44,col='blue',lwd=3,lty=2)
+
+# bubble plot
+ plt.name <- paste('fshry/','481all_m1&2_juvl_bubble.pdf',sep='')
+ pdf(file = plt.name)
+ par(cex=1.4) 
+ long.srv <- melt(setDT(as.data.frame(oc.srv)), id.vars = c("year"), variable.name = "mm")
+ plot(long.srv$year,as.numeric(as.character(long.srv$mm)),cex=long.srv$value*30,pch=19,
+     col=ifelse(long.srv$value>0,'black','white'),
+     main= 'AMLR Survey',
+     #'plot(long.srv$year,long.srv$mm,cex=long.srv$value*30)',
+     ylim=c(0,60),ylab= 'Krill length (mm)', xlab= 'Year')
+ abline(h=30,col='blue',lwd=3,lty=2)
+ abline(h=44,col='blue',lwd=3,lty=2)
+
 graphics.off()
