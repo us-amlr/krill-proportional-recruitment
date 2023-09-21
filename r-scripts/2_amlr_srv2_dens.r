@@ -42,3 +42,4 @@ if(nareas == 4){
 
   write.csv(propRec.amlr,paste('propRec_csvs/AMLR_srv_',juv.l,'mm_48.1.csv'))
   } #end nareas == 4
+
