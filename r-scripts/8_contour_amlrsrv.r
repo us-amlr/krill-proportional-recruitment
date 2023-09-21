@@ -24,6 +24,20 @@ if(!dir.exists(paste('plots_',juv.l,'mm/1area1leg',sep=''))){
          nlevels=20,main = 'AMLR LFs scaled')
          abline(h=30,col='blue',lwd=3,lty=2)
          abline(h=44,col='blue',lwd=3,lty=2)
+
+# bubble plot
+  plt.name <- paste('plots_',juv.l,'mm/1area1leg/AMLR LFs scaled_bubble.pdf',sep='')
+  pdf(file = plt.name)
+  par(cex=1.4) 
+  library(data.table)
+  long.srv <- melt(setDT(as.data.frame(oc.srv)), id.vars = c("year"), variable.name = "mm")
+  plot(long.srv$year,as.numeric(as.character(long.srv$mm)),cex=long.srv$value*30,pch=19,
+     col=ifelse(long.srv$value>0,'black','white'),
+     main= 'AMLR Survey',
+     #'plot(long.srv$year,long.srv$mm,cex=long.srv$value*30)',
+     ylim=c(0,60),ylab= 'Krill length (mm)', xlab= 'Year')
+  abline(h=30,col='blue',lwd=3,lty=2)
+  abline(h=44,col='blue',lwd=3,lty=2)
   }
   graphics.off()
 ######## 
