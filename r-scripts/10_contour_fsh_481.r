@@ -92,7 +92,7 @@ tmp <- cbind(year=rownames(oc.fsh.scaled[,1:35]),as.data.frame(oc.fsh.scaled[,1:
 long.fsh <- melt(setDT(tmp), 
            id.vars = c('year'), variable.name = "mm")
 
-plt.name <- paste('fshry/','481all_m1&2_juvl_bubble.pdf',sep='')
+plt.name <- paste('fshry/','Fishery_481all_m1&2_bubble.pdf',sep='')
 pdf(file = plt.name)
 par(cex=1.4) 
 par(cex=1.3)
