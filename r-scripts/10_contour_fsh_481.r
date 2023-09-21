@@ -83,13 +83,22 @@ oc.fsh.scaled <- as.data.frame(as.matrix(s481_m1))
  plt.name <- paste('fshry/','481all_m1&2_juvl_bubble.pdf',sep='')
  pdf(file = plt.name)
  par(cex=1.4) 
- long.srv <- melt(setDT(as.data.frame(oc.srv)), id.vars = c("year"), variable.name = "mm")
- plot(long.srv$year,as.numeric(as.character(long.srv$mm)),cex=long.srv$value*30,pch=19,
-     col=ifelse(long.srv$value>0,'black','white'),
-     main= 'AMLR Survey',
-     #'plot(long.srv$year,long.srv$mm,cex=long.srv$value*30)',
+oc.fsh.scaled <- as.data.frame(as.matrix(fsh.len.scaled[2,,,2]))
+ oc.fsh.scaled<-as.data.frame(as.matrix(t(oc.fsh.scaled)))
+ oc.fsh.scaled <- oc.fsh.scaled[,-1] #zero length column
+
+
+tmp <- cbind(year=rownames(oc.fsh.scaled[,1:35]),as.data.frame(oc.fsh.scaled[,1:35]))
+long.fsh <- melt(setDT(tmp), 
+           id.vars = c('year'), variable.name = "mm")
+
+par(cex=1.3)
+plot(long.fsh$year,as.numeric(as.character(long.fsh$mm)),cex=long.fsh$value*30,pch=19,
+     col=ifelse(long.fsh$value>0,'black','white'),
+     main= 'Fishery',
+     #'plot(long.fsh$year,long.fsh$mm,cex=long$value*30)',
      ylim=c(0,60),ylab= 'Krill length (mm)', xlab= 'Year')
- abline(h=30,col='blue',lwd=3,lty=2)
- abline(h=44,col='blue',lwd=3,lty=2)
+abline(h=30,col='blue',lwd=3,lty=2)
+abline(h=44,col='blue',lwd=3,lty=2)
 
 graphics.off()
