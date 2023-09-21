@@ -1,6 +1,10 @@
 # set 'path.nm' to user's working directory
 path.nm <- '/users/noaa/papers/dhk/2022_propRec/3mar/mar23/'
 setwd(paste(path.nm,sep=''))
+
+library(dplyr) # used in '3_fshry.r'
+library(data.table) # used in '8_contour_amlrsrv.r' and '10_contour_fsh_481.r'
+
 juv.l <- 30 # krill length in mm defined as <= juveniles
             # krill juv.l of 30, 35, 38, 40, 44 can be run without code modification
 nareas <- 1 # no. sampling strata, must be 1 or 4
