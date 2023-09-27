@@ -1,7 +1,7 @@
 # krill-proportional-recruitment
 Proportional recruitment in Antarctic krill: data and calculations
 
-This repository contains r-scripts and datasets on length-frequencies of Antarctic krill in U.S. AMLR summer trawl surveys, the diets of three penguin species (gentoos, adelies, and chinstraps) in additional AMLR datasets, adelie penguins at the Palmer LTER site (available at https://oceaninformatics.ucsd.edu/datazoo/catalogs/pallter/datasets/89) and observer data collected from the international krill fishery in CCAMLR Subarea 48.1. The r-scripts calculate length-based proportional recruitment (the annual means and standard deviations for each multiyear time series of the proportion of krill smaller than a specified length). The results are illustrated in the 'plots' directory. The plots presented to the Scientific Committee on Antarctic Research Krill Action Group workshop on March 9, 2022 are in the 'plots/SKAG' and 'plots/contours' directories.
+This repository contains the r-scripts and datasets used to produce the figures and tables reported in Kinzey et al., 2023. These include length-frequencies of Antarctic krill in U.S. AMLR summer trawl surveys, the diets of three penguin species (gentoos, adelies, and chinstraps), adelie penguins at the Palmer LTER site (available at https://oceaninformatics.ucsd.edu/datazoo/catalogs/pallter/datasets/89) and observer data collected from the international krill fishery in CCAMLR Subarea 48.1. The r-scripts calculate length-based proportional recruitment (the annual means and standard deviations for each multiyear time series of the proportion of krill smaller than a specified length). The results are illustrated in the 'plots' directory. The plots presented to the Scientific Committee on Antarctic Research Krill Action Group workshop on March 9, 2022 are in the 'plots/SKAG' and 'plots/contours' directories.
 
 To reproduce the results in the 'plots' directory, download '1_manage_scripts.r', and the 'data' and 'r-scripts' directories onto a local computer. Identify the local working directory in line 2 of the file '1_manage_scripts.r'. Running '1_manage_scripts.r' will call the other nine files in 'r-scripts' to produce the plots.
 
@@ -16,6 +16,11 @@ Line 4 of '1_manage_scripts.r' identifies whether the user wants to combine the 
 Line 5 identifies whether the user wants to combine January and Februrary sampling (enter '1') or consider them separately (enter '2').
 
 Line 6 identifies the length in mm below which krill are considered to be juveniles. These lengths must be either '30', '35', or '40' for the '4_lter_adelie.r' script to work properly (krill lengths are in 5 mm bins in the dataset used by that script).
+
+Literature cited
+
+D. Kinzey, J.T. Hinke, C.S. Reiss and G.M. Watters (2023), Recruitment variability of Antarctic krill in Subarea 48.1 expressed as ‘proportional recruitment’: length threshold effects. CCAMLR Science, Volume 24. 18 pp.
+
 
 # Disclaimer
 
